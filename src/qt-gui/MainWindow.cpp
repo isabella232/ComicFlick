@@ -54,14 +54,15 @@ void method drawFrameBoundaries(QPainter& p, const QList<comicflick::ComicFrame*
 void method repaintComic() {
     QImage img(comic.image);
     QPainter p(&img);
-    p.setPen(Qt::red);
-    drawFrameBoundaries(p, comic.frames);
+    QColor border = QColor::fromHsl(128, 255, 128, 128);
+    QColor filling(border);
+    filling.setAlpha(32);
     QPen pen;
     pen.setWidth(3);
-    pen.setColor(Qt::green);
+    pen.setColor(border);
     p.setPen(pen);
-    p.drawEllipse(comic.current().rect.center(), 4, 4);
-    drawFrameBoundaries(p, comic.current().frames_left);
+    drawFrameBoundaries(p, comic.frames);
+    p.fillRect(comic.current().rect, filling);
     ui->comicStrip->setPixmap(QPixmap::fromImage(img));
 }
 
