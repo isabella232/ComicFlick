@@ -156,7 +156,7 @@ QImage paddedImage(const QImage& image, uint padding) {
     return img;
 }
 
-bool isTop(const QRect& a, const QRect& b) {
+bool isAbove(const QRect& a, const QRect& b) {
     return a.bottom() <= b.top();
 }
 
@@ -168,42 +168,152 @@ bool isRight(const QRect& a, const QRect& b) {
     return a.left() >= b.right();
 }
 
-bool isBottom(const QRect& a, const QRect& b) {
+bool isBelow(const QRect& a, const QRect& b) {
     return a.top() >= b.bottom();
 }
 
-struct TopLeft {
-    int x, y;
-    TopLeft(const QPoint& tl) : x(tl.x()), y(tl.y()) {}
-    bool operator < (const TopLeft& b) const {
-        return (x < b.x) || (x == b.x && y < b.y);
-    }
-};
-
-QList<Frame*> findFrames(const QImage& image) {
+QList<ComicFrame*> findFrames(const QImage& image) {
     qDebug() << "findFrames";
     QList<QRect> rects = findRectangles(image);
     removeUnlikelyRects(image, rects);
-    QMap<TopLeft, Frame*> frames;
+    QMap<ComicFrame::Sort, ComicFrame*> frames;
     for (QRect rect : rects) {
-        frames.insert(TopLeft(rect.topLeft()), new Frame(rect));
+        ComicFrame *frame = new ComicFrame(rect);
+        frames.insert(frame->sorter(), frame);
     }
     // look for rects, intersecting with hori./vert. lines
     // sort in axis
-    for (Frame* a : frames.values()) {
-        QMap<TopLeft, Frame*> left, right;
-        for (Frame* b : frames.values()) {
+    for (ComicFrame* a : frames.values()) {
+        QMap<ComicFrame::Sort, ComicFrame*> left, right, above, below;
+        for (ComicFrame* b : frames.values()) {
             if (a == b) continue;
-            if (isTop(b->rect, a->rect) || isBottom(b->rect, a->rect)) continue;
-            if (isLeft(b->rect, a->rect))
-                left.insert(TopLeft(b->rect.topLeft()), b);
-            if (isRight(b->rect, a->rect))
-                right.insert(TopLeft(b->rect.topLeft()), b);
+            bool    is_left  = isLeft (b->rect, a->rect),
+                    is_right = isRight(b->rect, a->rect),
+                    is_above = isAbove(b->rect, a->rect),
+                    is_below = isBelow(b->rect, a->rect);
+            if (is_left  && !is_above && !is_below)
+                left.insert(b->sorter(), b);
+            if (is_right && !is_above && !is_below)
+                right.insert(b->sorter(), b);
+            if (is_above && !is_left  && !is_right)
+                above.insert(b->sorter(), b);
+            if (is_below && !is_left  && !is_right)
+                below.insert(b->sorter(), b);
         }
-        a->left.append(left.values());
-        a->right.append(right.values());
+        a->frames_left.append(left.values());
+        a->frames_right.append(right.values());
+        a->frames_above.append(above.values());
+        a->frames_below.append(below.values());
     }
     return frames.values();
+}
+
+const ComicFrame& ComicFrame::left() const {
+    if (frames_left.empty())
+        return *this;
+    return *frames_left.last();
+}
+
+const ComicFrame& ComicFrame::right() const {
+    if (frames_right.empty())
+        return *this;
+    return *frames_right.first();
+}
+
+const ComicFrame& ComicFrame::above() const {
+    if (frames_above.empty())
+        return *this;
+    return *frames_above.last();
+}
+
+const ComicFrame& ComicFrame::below() const {
+    if (frames_below.empty())
+        return *this;
+    return *frames_below.first();
+}
+
+const ComicFrame& ComicFrame::leftmost() const {
+    if (frames_left.empty())
+        return *this;
+    return *frames_left.first();
+}
+
+const ComicFrame& ComicFrame::rightmost() const {
+    if (frames_right.empty())
+        return *this;
+    return *frames_right.last();
+}
+
+bool ComicFrame::operator < (const ComicFrame& o) const {
+    return isLeft(rect, o.rect) || (rect.bottom() <= o.rect.top());
+}
+
+Comic::Comic() {
+    frames.append(new ComicFrame(QRect()));
+    current_frame = frames.first();
+}
+
+Comic::~Comic() {
+    for (auto frame : frames) {
+        delete frame;
+    }
+}
+
+Comic::Comic(const QImage &comic_image) {
+    load(comic_image);
+}
+
+void Comic::load(const QImage& comic_image) {
+    for (auto frame : frames) {
+        delete frame;
+    }
+    frames.clear();
+    image = comic_image.convertToFormat(QImage::Format_ARGB32);
+    image = paddedImage(image, 2);
+    frames.append(findFrames(image));
+    if (frames.empty()) {
+        frames.append(new ComicFrame(image.rect()));
+    }
+    current_frame = frames.first();
+}
+
+const ComicFrame& Comic::first() const {
+    return *frames.first();
+}
+
+const ComicFrame& Comic::current() const {
+    return *current_frame;
+}
+
+const ComicFrame& Comic::up() {
+    current_frame = &current().above();
+    return *current_frame;
+}
+
+
+const ComicFrame& Comic::left() {
+    auto left = &current().left();
+    auto above = &current().above();
+    current_frame =
+        left != current_frame ? left :
+        above != current_frame ? &above->rightmost() :
+        current_frame;
+    return *current_frame;
+}
+
+const ComicFrame& Comic::right() {
+    auto right = &current().right();
+    auto below = &current().below();
+    current_frame =
+        right != current_frame ? right :
+        below != current_frame ? &below->leftmost() :
+        current_frame;
+    return *current_frame;
+}
+
+const ComicFrame& Comic::down() {
+    current_frame = &current().below();
+    return *current_frame;
 }
 
 }

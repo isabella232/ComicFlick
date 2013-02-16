@@ -39,19 +39,48 @@ void method processComic(const QString &filename) {
     if (!QFile(filename).exists())
         return;
     QImage img(filename);
-    img = img.convertToFormat(QImage::Format_ARGB32);
-    img = comicflick::paddedImage(img, 2);
-    QList<comicflick::Frame*> frames = comicflick::findFrames(img);
-    QPainter p(&img);
-    p.setPen(Qt::red);
-    drawFrameBoundaries(p, frames);
-    ui->comicStrip->setPixmap(QPixmap::fromImage(img));
+    comic.load(img);
+    repaintComic();
 }
 
-void method drawFrameBoundaries(QPainter& p, const QList<comicflick::Frame*>& frames) const {
+void method drawFrameBoundaries(QPainter& p, const QList<comicflick::ComicFrame*>& frames) const {
     QList<QRect> rects;
-    for (comicflick::Frame* f : frames) {
+    for (ComicFrame* f : frames) {
         rects.append(f->rect);
     }
     p.drawRects(rects.toVector());
+}
+
+void method repaintComic() {
+    QImage img(comic.image);
+    QPainter p(&img);
+    p.setPen(Qt::red);
+    drawFrameBoundaries(p, comic.frames);
+    QPen pen;
+    pen.setWidth(3);
+    pen.setColor(Qt::green);
+    p.setPen(pen);
+    p.drawEllipse(comic.current().rect.center(), 4, 4);
+    drawFrameBoundaries(p, comic.current().frames_left);
+    ui->comicStrip->setPixmap(QPixmap::fromImage(img));
+}
+
+void method on_actionRight_triggered() {
+    comic.right();
+    repaintComic();
+}
+
+void MainWindow::on_actionLeft_triggered() {
+    comic.left();
+    repaintComic();
+}
+
+void MainWindow::on_actionUp_triggered() {
+    comic.up();
+    repaintComic();
+}
+
+void MainWindow::on_actionDown_triggered() {
+    comic.down();
+    repaintComic();
 }
