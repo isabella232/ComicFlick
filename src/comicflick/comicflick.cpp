@@ -1,6 +1,7 @@
 #include "comicflick.h"
 #include <QDebug>
 #include <opencv2/highgui/highgui.hpp>
+#include "ForIterator.h"
 
 namespace comicflick {
 
@@ -137,24 +138,22 @@ bool isContained(const QRect& a, const QList<QRect>& rects) {
 
 void removeUnlikelyRects(const QImage& image, QList<QRect> &rects) {
     qDebug() << "removeUnlikelyRects;";
+    if (rects.empty())
+        return;
     int n_rects;
     do {
-        auto i = QMutableListIterator<QRect>(rects);
         n_rects = rects.size();
-        while (i.hasNext()) {
-            QRect rect = i.next();
+        for (auto i : ForIterator(rects)) {
+            QRect rect = *i;
             if (rect == image.rect() || containsAll(rect, rects)) {
-                i.remove();
+                rects.erase(i);
             }
         }
     } while (n_rects != rects.size());
-    {
-        auto i = QMutableListIterator<QRect>(rects);
-        while (i.hasNext()) {
-            QRect rect = i.next();
-            if (isContained(rect, rects)) {
-                i.remove();
-            }
+    for (auto i : ForIterator(rects)) {
+        QRect rect = *i;
+        if (isContained(rect, rects)) {
+            rects.erase(i);
         }
     }
 }

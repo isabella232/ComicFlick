@@ -10,7 +10,8 @@ CONFIG += staticlib
 
 SOURCES += comicflick.cpp
 
-HEADERS += comicflick.h
+HEADERS += comicflick.h \
+    ForIterator.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
