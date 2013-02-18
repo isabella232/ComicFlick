@@ -20,6 +20,9 @@ double angle( Point pt1, Point pt2, Point pt0 )
 // returns sequence of squares detected on the image.
 vector<vector<Point> > findRectangles(const Mat& image)
 {
+    if (image.cols < 2 || image.rows < 2) {
+        throw new Exception;
+    }
     vector<vector<Point> > rects;
     const int thresh = 50, N = 11;
 
