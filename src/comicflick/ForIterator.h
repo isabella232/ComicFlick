@@ -10,7 +10,6 @@
  *   }
  */
 template <typename T> struct Iterator {
-#define ForIterator(X) Iterator<decltype(X)>(X)
     T& list;
     typedef decltype(list.begin()) I;
 
@@ -26,3 +25,6 @@ template <typename T> struct Iterator {
     InnerIterator begin() { return InnerIterator(list.begin()); }
     InnerIterator end() { return InnerIterator(list.end()); }
 };
+template <typename T> Iterator<T> ForIterator(T& list) {
+    return Iterator<T>(list);
+}
