@@ -329,4 +329,8 @@ const ComicFrame& Comic::down() {
     return *current_frame;
 }
 
+QImage Comic::current_image() const {
+    return image.copy(current().rect);
+}
+
 }

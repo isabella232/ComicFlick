@@ -35,13 +35,14 @@ public:
     Comic();
     Comic(const QImage& comic_image);
     ~Comic();
-    void load(const QImage& comic_image);
-    const ComicFrame& first     () const;
-    const ComicFrame& current   () const;
-    const ComicFrame& left      ();
-    const ComicFrame& right     ();
-    const ComicFrame& up        ();
-    const ComicFrame& down      ();
+    void              load          (const QImage& comic_image);
+    const ComicFrame& first         () const;
+    const ComicFrame& current       () const;
+    const ComicFrame& left          ();
+    const ComicFrame& right         ();
+    const ComicFrame& up            ();
+    const ComicFrame& down          ();
+    QImage            current_image () const;
 
     QImage image;
     QList<ComicFrame*> frames;
