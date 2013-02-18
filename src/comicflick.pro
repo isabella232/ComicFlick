@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS = comicflick qt-gui opencv-squares
+SUBDIRS = comicflick qt-gui opencv-squares \
+    quick
 opencv-squares.depends = comicflick
 qt-gui.depends = comicflick
 
