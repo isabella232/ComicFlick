@@ -283,11 +283,11 @@ void Comic::load(const QImage& comic_image) {
         delete frame;
     }
     frames.clear();
-    image = comic_image.convertToFormat(QImage::Format_ARGB32);
-    image = paddedImage(image, 2);
-    frames.append(findFrames(image));
+    m_image = comic_image.convertToFormat(QImage::Format_ARGB32);
+    m_image = paddedImage(m_image, 2);
+    frames.append(findFrames(m_image));
     if (frames.empty()) {
-        frames.append(new ComicFrame(image.rect()));
+        frames.append(new ComicFrame(m_image.rect()));
     }
     current_frame = frames.first();
 }
@@ -332,7 +332,7 @@ const ComicFrame& Comic::down() {
 }
 
 QImage Comic::currentImage() const {
-    return image.copy(current().rect());
+    return image().copy(current().rect());
 }
 
 }

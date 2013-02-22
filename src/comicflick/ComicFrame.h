@@ -44,6 +44,7 @@ public slots:
 
 class Comic : public QObject {
     Q_OBJECT
+    Q_PROPERTY(QImage m_image READ image)
 public:
     Comic();
     Comic(const QImage& comic_image);
@@ -59,9 +60,11 @@ public:
     Q_INVOKABLE const ComicFrame* currentFrame  () const { return current_frame; }
     Q_INVOKABLE QVariant          currentRect   () const { return current_frame->rect(); }
 
-    QImage image;
+    const QImage& image() const { return m_image; }
     QList<ComicFrame*> frames;
     const ComicFrame* current_frame;
+private:
+    QImage m_image;
 };
 
 }

@@ -52,7 +52,7 @@ void method drawFrameBoundaries(QPainter& p, const QList<comicflick::ComicFrame*
 }
 
 void method repaintComic() {
-    QImage img(comic.image);
+    QImage img(comic.image());
     QPainter p(&img);
     QColor border = QColor::fromHsl(128, 255, 128, 128);
     QColor filling(border);

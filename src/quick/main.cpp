@@ -7,14 +7,14 @@
 
 using namespace comicflick;
 
-struct ComicFrameProvider : QQuickImageProvider {
-    ComicFrameProvider(const Comic& comic) :
+struct ComicImageProvider : QQuickImageProvider {
+    ComicImageProvider(const Comic& comic) :
         QQuickImageProvider(QQuickImageProvider::Image),
         comic(comic) {
     }
 
     QImage requestImage(const QString &/*id*/, QSize */*size*/, const QSize &/*requestedSize*/) {
-        return comic.currentImage();
+        return QImage(comic.image());
     }
 
     const Comic& comic;
