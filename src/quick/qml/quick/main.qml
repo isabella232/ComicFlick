@@ -1,10 +1,10 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 
-Rectangle {
+MainView {
     id: root
-    width: 360
-    height: 360
+    width: units.gu(40)  // magic numbers
+    height: units.gu(71) // taken from lp:gallery-app for phone size
     focus: true
     Image {
         id: comicImage
