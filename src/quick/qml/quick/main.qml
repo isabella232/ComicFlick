@@ -7,30 +7,33 @@ Rectangle {
     focus: true
     Image {
         id: comicImage
-        source: "file:./../../why_are_you_reading_this.png"
-    }
-    Keys.onPressed: {
-        var action_keys_map = {
-            "comic.up"   : [ Qt.Key_Up   , Qt.Key_W, Qt.Key_J ],
-            "comic.down" : [ Qt.Key_Down , Qt.Key_S, Qt.Key_K ],
-            "comic.left" : [ Qt.Key_Left , Qt.Key_A, Qt.Key_H ],
-            "comic.right": [ Qt.Key_Right, Qt.Key_D, Qt.Key_L ]
-        }
-        var action_fun_map = {
-            "comic.up"   : function() { comic.up() },
-            "comic.down" : function() { comic.down() },
-            "comic.left" : function() { comic.left() },
-            "comic.right": function() { comic.right() }
-        }
-        for (var action in action_keys_map) {
-            var keys = action_keys_map[action];
-            var fun  = action_fun_map [action];
-            if (keys.indexOf(event.key) !== -1) {
-                fun();
-                var rect = comic.currentRect()
-                comicImage.x = -rect.x
-                comicImage.y = -rect.y
+        source: "image://comicimageprovider/current"
+        Behavior on x {
+            PropertyAnimation {
+                easing.type: Easing.InOutQuad
             }
         }
+        Behavior on y {
+            PropertyAnimation {
+                easing.type: Easing.InOutQuad
+            }
+        }
+    }
+    Keys.onPressed: {
+        if ([ Qt.Key_Up, Qt.Key_W, Qt.Key_J ].indexOf(event.key) > -1) {
+            comic.up();
+        }
+        if ([ Qt.Key_Down, Qt.Key_S, Qt.Key_K ].indexOf(event.key) > -1) {
+            comic.down();
+        }
+        if ([ Qt.Key_Left , Qt.Key_A, Qt.Key_H ].indexOf(event.key) > -1) {
+            comic.left();
+        }
+        if ([ Qt.Key_Right, Qt.Key_D, Qt.Key_L ].indexOf(event.key) > -1) {
+            comic.right();
+        }
+        var rect = comic.currentRect()
+        comicImage.x = (root.width  / 2) - (rect.x + rect.width / 2)
+        comicImage.y = (root.height / 2) - (rect.y + rect.height / 2)
     }
 }
