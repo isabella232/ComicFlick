@@ -1,7 +1,4 @@
 #include "comicflick.h"
-#include <QDebug>
-#include <opencv2/highgui/highgui.hpp>
-#include "ForIterator.h"
 
 namespace comicflick {
 

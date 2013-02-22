@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+include(../super.pri)
+
 TARGET = comicflick
 TEMPLATE = lib
 CONFIG += staticlib

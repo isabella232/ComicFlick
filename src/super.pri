@@ -5,3 +5,4 @@ defineReplace(abspath) {
 BUILD = $$abspath( $$PWD/../build/ )
 SRC   = $$abspath( $$PWD/ )
 
+release: DEFINES += QT_NO_DEBUG_OUTPUT

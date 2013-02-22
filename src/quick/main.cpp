@@ -1,9 +1,6 @@
-#include <QtGui/QGuiApplication>
+#include <QtQuick>
 #include "qtquick2applicationviewer.h"
-#include <QQuickImageProvider>
 #include "comicflick.h"
-#include <QtQml>
-#include <QQmlDebuggingEnabler>
 
 using namespace comicflick;
 
@@ -22,7 +19,6 @@ struct ComicImageProvider : QQuickImageProvider {
 
 int main(int argc, char *argv[])
 {
-    QQmlDebuggingEnabler qml_debug;
     QGuiApplication app(argc, argv);
 
     QString filepath = app.arguments().value(1, "./why_are_you_reading_this.png");

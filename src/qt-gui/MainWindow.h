@@ -1,9 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui>
-#include <QMainWindow>
-#include <QFileDialog>
+#include <QtWidgets>
 #include "comicflick.h"
 
 using namespace comicflick;

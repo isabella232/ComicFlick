@@ -1,10 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include <QtGui>
-#include <QFileDialog>
-#include <QImage>
-
 #define method MainWindow::
 
 method MainWindow(QWidget *parent) :
