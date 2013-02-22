@@ -12,7 +12,6 @@ SOURCES += comicflick.cpp \
     ComicFrame.cpp
 
 HEADERS += comicflick.h \
-    ForIterator.h \
     ComicFrame.h
 unix:!symbian {
     maemo5 {
