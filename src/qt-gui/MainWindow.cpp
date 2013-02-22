@@ -10,15 +10,18 @@ method MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionExit, &QAction::triggered,
             this, &MainWindow::close);
-    connect(ui->actionOpen, &QAction::triggered, [=](bool&) {
-        openAndProcessComic(ui->actionOpen->text());
-    });
+    connect(ui->actionOpen, &QAction::triggered,
+            this, &MainWindow::openAndProcessComicByDialog);
     processComic("why_are_you_reading_this.png");
 }
 
 method ~MainWindow()
 {
     delete ui;
+}
+
+void method openAndProcessComicByDialog() {
+    openAndProcessComic(ui->actionOpen->text());
 }
 
 void method openAndProcessComic(const QString &caption) {

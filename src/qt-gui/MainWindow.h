@@ -17,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void openAndProcessComicByDialog();
     void openAndProcessComic(const QString &caption);
     void processComic(const QString &filename);
     void drawFrameBoundaries(QPainter& p, const QList<comicflick::ComicFrame*>& frames) const;
