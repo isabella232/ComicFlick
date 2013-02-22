@@ -8,10 +8,12 @@ TARGET = comicflick
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += comicflick.cpp
+SOURCES += comicflick.cpp \
+    ComicFrame.cpp
 
 HEADERS += comicflick.h \
-    ForIterator.h
+    ForIterator.h \
+    ComicFrame.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib

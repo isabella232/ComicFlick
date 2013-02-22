@@ -30,4 +30,6 @@ PKGCONFIG += opencv
 OTHER_FILES += \
     why_are_you_reading_this.png
 
-for(file, OTHER_FILES):system(cp $$file $$BUILD/$$TARGET)
+for(file, OTHER_FILES) {
+    QMAKE_POST_LINK += "cp $$SRC/$$TARGET/$$file $$BUILD/$$TARGET"
+}

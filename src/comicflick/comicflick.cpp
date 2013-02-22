@@ -200,10 +200,10 @@ QList<ComicFrame*> findFrames(const QImage& image) {
         QMap<ComicFrame::Sort, ComicFrame*> left, right, above, below;
         for (ComicFrame* b : frames.values()) {
             if (a == b) continue;
-            bool    is_left  = isLeft (b->rect, a->rect),
-                    is_right = isRight(b->rect, a->rect),
-                    is_above = isAbove(b->rect, a->rect),
-                    is_below = isBelow(b->rect, a->rect);
+            bool    is_left  = isLeft (b->rect(), a->rect()),
+                    is_right = isRight(b->rect(), a->rect()),
+                    is_above = isAbove(b->rect(), a->rect()),
+                    is_below = isBelow(b->rect(), a->rect());
             if (is_left  && !is_above && !is_below)
                 left.insert(b->sorter(), b);
             if (is_right && !is_above && !is_below)
@@ -258,7 +258,7 @@ const ComicFrame& ComicFrame::rightmost() const {
 }
 
 bool ComicFrame::operator < (const ComicFrame& o) const {
-    return isLeft(rect, o.rect) || (rect.bottom() <= o.rect.top());
+    return isLeft(rect(), o.rect()) || (rect().bottom() <= o.rect().top());
 }
 
 Comic::Comic() {
@@ -329,8 +329,8 @@ const ComicFrame& Comic::down() {
     return *current_frame;
 }
 
-QImage Comic::current_image() const {
-    return image.copy(current().rect);
+QImage Comic::currentImage() const {
+    return image.copy(current().rect());
 }
 
 }

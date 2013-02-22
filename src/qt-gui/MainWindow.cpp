@@ -46,7 +46,7 @@ void method processComic(const QString &filename) {
 void method drawFrameBoundaries(QPainter& p, const QList<comicflick::ComicFrame*>& frames) const {
     QList<QRect> rects;
     for (ComicFrame* f : frames) {
-        rects.append(f->rect);
+        rects.append(f->rect());
     }
     p.drawRects(rects.toVector());
 }
@@ -62,7 +62,7 @@ void method repaintComic() {
     pen.setColor(border);
     p.setPen(pen);
     drawFrameBoundaries(p, comic.frames);
-    p.fillRect(comic.current().rect, filling);
+    p.fillRect(comic.current().rect(), filling);
     ui->comicStrip->setPixmap(QPixmap::fromImage(img));
 }
 

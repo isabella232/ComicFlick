@@ -2,6 +2,8 @@
 #include "qtquick2applicationviewer.h"
 #include <QQuickImageProvider>
 #include "comicflick.h"
+#include <QtQml>
+#include <QQmlDebuggingEnabler>
 
 using namespace comicflick;
 
@@ -11,8 +13,8 @@ struct ComicFrameProvider : QQuickImageProvider {
         comic(comic) {
     }
 
-    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) {
-        return comic.current_image();
+    QImage requestImage(const QString &/*id*/, QSize */*size*/, const QSize &/*requestedSize*/) {
+        return comic.currentImage();
     }
 
     const Comic& comic;
@@ -20,6 +22,7 @@ struct ComicFrameProvider : QQuickImageProvider {
 
 int main(int argc, char *argv[])
 {
+    QQmlDebuggingEnabler qml_debug;
     QGuiApplication app(argc, argv);
 
     Comic comic;
@@ -29,6 +32,8 @@ int main(int argc, char *argv[])
 
     QtQuick2ApplicationViewer viewer;
     viewer.engine()->addImageProvider("comicframeprovider", new ComicFrameProvider(comic));
+    QQmlContext* context = viewer.rootContext();
+    context->setContextProperty("comic", &comic);
     viewer.setMainQmlFile(QStringLiteral("qml/quick/main.qml"));
     viewer.showExpanded();
 
