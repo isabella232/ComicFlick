@@ -146,17 +146,19 @@ void removeUnlikelyRects(const QImage& image, QList<QRect> &rects) {
     int n_rects;
     do {
         n_rects = rects.size();
-        for (auto i : ForIterator(rects)) {
-            QRect rect = *i;
+        for (int i = 0; i < rects.length(); ++i) {
+            QRect rect = rects[i];
             if (rect == image.rect() || containsAll(rect, rects)) {
-                rects.erase(i);
+                rects.removeAt(i);
+                --i;
             }
         }
     } while (n_rects != rects.size());
-    for (auto i : ForIterator(rects)) {
-        QRect rect = *i;
+    for (int i = 0; i < rects.length(); ++i) {
+        QRect rect = rects[i];
         if (isContained(rect, rects)) {
-            rects.erase(i);
+            rects.removeAt(i);
+            --i;
         }
     }
 }
