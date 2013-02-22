@@ -3,6 +3,9 @@ defineReplace(abspath) {
 }
 
 BUILD = $$abspath( $$PWD/../build/ )
+CONFIG(debug, debug|release): BUILD = $$BUILD/debug/
+CONFIG(release, debug|release): BUILD = $$BUILD/release/
+
 SRC   = $$abspath( $$PWD/ )
 
-release: DEFINES += QT_NO_DEBUG_OUTPUT
+CONFIG(release, debug|release):: DEFINES += QT_NO_DEBUG_OUTPUT

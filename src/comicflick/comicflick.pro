@@ -15,14 +15,6 @@ SOURCES += comicflick.cpp \
 
 HEADERS += comicflick.h \
     ComicFrame.h
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
-}
 
 QMAKE_CXXFLAGS += -std=c++0x
 

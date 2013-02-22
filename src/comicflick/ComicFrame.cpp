@@ -7,4 +7,9 @@ ComicFrame::ComicFrame(QObject *parent) :
 {
 }
 
+void Comic::setCurrentFrame(const ComicFrame *cf) {
+    current_frame = cf;
+    changed();
+}
+
 };

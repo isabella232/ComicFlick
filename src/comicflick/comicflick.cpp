@@ -262,7 +262,7 @@ bool ComicFrame::operator < (const ComicFrame& o) const {
 
 Comic::Comic() {
     frames.append(new ComicFrame(QRect()));
-    current_frame = frames.first();
+    setCurrentFrame(frames.first());
 }
 
 Comic::~Comic() {
@@ -286,7 +286,7 @@ void Comic::load(const QImage& comic_image) {
     if (frames.empty()) {
         frames.append(new ComicFrame(m_image.rect()));
     }
-    current_frame = frames.first();
+    setCurrentFrame(frames.first());
 }
 
 const ComicFrame& Comic::first() const {
@@ -298,7 +298,7 @@ const ComicFrame& Comic::current() const {
 }
 
 const ComicFrame& Comic::up() {
-    current_frame = &current().above();
+    setCurrentFrame(&current().above());
     return *current_frame;
 }
 
@@ -306,25 +306,25 @@ const ComicFrame& Comic::up() {
 const ComicFrame& Comic::left() {
     auto left = &current().left();
     auto above = &current().above();
-    current_frame =
+    setCurrentFrame(
         left != current_frame ? left :
         above != current_frame ? &above->rightmost() :
-        current_frame;
+        current_frame);
     return *current_frame;
 }
 
 const ComicFrame& Comic::right() {
     auto right = &current().right();
     auto below = &current().below();
-    current_frame =
+    setCurrentFrame(
         right != current_frame ? right :
         below != current_frame ? &below->leftmost() :
-        current_frame;
+        current_frame);
     return *current_frame;
 }
 
 const ComicFrame& Comic::down() {
-    current_frame = &current().below();
+    setCurrentFrame(&current().below());
     return *current_frame;
 }
 

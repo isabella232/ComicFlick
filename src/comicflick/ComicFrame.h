@@ -42,6 +42,10 @@ public slots:
 class Comic : public QObject {
     Q_OBJECT
     Q_PROPERTY(QImage m_image READ image)
+    Q_PROPERTY(const ComicFrame* current_frame
+               READ currentFrame
+               WRITE setCurrentFrame
+               NOTIFY changed)
 public:
     Comic();
     Comic(const QImage& comic_image);
@@ -55,11 +59,14 @@ public:
     Q_INVOKABLE const ComicFrame& down          ();
     Q_INVOKABLE QImage            currentImage  () const;
     Q_INVOKABLE const ComicFrame* currentFrame  () const { return current_frame; }
+    Q_INVOKABLE void              setCurrentFrame(const ComicFrame* cf);
     Q_INVOKABLE QVariant          currentRect   () const { return current_frame->rect(); }
 
     const QImage& image() const { return m_image; }
     QList<ComicFrame*> frames;
     const ComicFrame* current_frame;
+signals:
+    void changed();
 private:
     QImage m_image;
 };

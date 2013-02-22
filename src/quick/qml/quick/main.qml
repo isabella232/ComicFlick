@@ -19,6 +19,14 @@ MainView {
                 easing.type: Easing.InOutQuad
             }
         }
+        Connections {
+            target: comic
+            onChanged: {
+                var rect = comic.currentRect()
+                comicImage.x = (root.width  / 2) - (rect.x + rect.width / 2)
+                comicImage.y = (root.height / 2) - (rect.y + rect.height / 2)
+            }
+        }
     }
     Keys.onPressed: {
         if ([ Qt.Key_Up, Qt.Key_W, Qt.Key_J ].indexOf(event.key) > -1) {
@@ -33,8 +41,5 @@ MainView {
         if ([ Qt.Key_Right, Qt.Key_D, Qt.Key_L ].indexOf(event.key) > -1) {
             comic.right();
         }
-        var rect = comic.currentRect()
-        comicImage.x = (root.width  / 2) - (rect.x + rect.width / 2)
-        comicImage.y = (root.height / 2) - (rect.y + rect.height / 2)
     }
 }

@@ -1,6 +1,7 @@
 #include <QtQuick>
 #include "qtquick2applicationviewer.h"
 #include "comicflick.h"
+#include <QDebug>
 
 using namespace comicflick;
 
