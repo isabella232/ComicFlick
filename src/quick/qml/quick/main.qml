@@ -6,22 +6,28 @@ MainView {
     width: units.gu(40)  // magic numbers
     height: units.gu(71) // taken from lp:gallery-app for phone size
     focus: true
-    Image {
-        id: comicImage
-        source: "image://comicimageprovider/current"
-        Behavior on x {
-            PropertyAnimation {
-                easing.type: Easing.InOutQuad
+    Page {
+        title: "Comic"
+        anchors.fill: parent
+        Image {
+            id: comicImage
+            source: "image://comicimageprovider/current"
+            Behavior on x {
+                PropertyAnimation {
+                    easing.type: Easing.InOutQuad
+                }
             }
-        }
-        Behavior on y {
-            PropertyAnimation {
-                easing.type: Easing.InOutQuad
+            Behavior on y {
+                PropertyAnimation {
+                    easing.type: Easing.InOutQuad
+                }
             }
-        }
-        Connections {
-            target: comic
-            onChanged: {
+            Connections {
+                target: comic
+                onChanged: comicImage.updatePosition()
+            }
+            Component.onCompleted: updatePosition()
+            function updatePosition() {
                 var rect = comic.currentRect()
                 comicImage.x = (root.width  / 2) - (rect.x + rect.width / 2)
                 comicImage.y = (root.height / 2) - (rect.y + rect.height / 2)
