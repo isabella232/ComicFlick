@@ -23,9 +23,12 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QString filepath = app.arguments().value(1, "./why_are_you_reading_this.png");
+    filepath = QDir().absoluteFilePath(filepath);
     Comic comic;
     if (QFile(filepath).exists()) {
         comic.load(QImage(filepath));
+    } else {
+        qDebug() << "File does not exist:" << filepath;
     }
 
     QtQuick2ApplicationViewer viewer;
