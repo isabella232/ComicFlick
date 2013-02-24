@@ -21,12 +21,16 @@ MainView {
             anchors.fill: parent
             Tab {
                 title: "ComicFlick"
-                page: Item {
-                    anchors.fill: parent
+                page: Flickable {
+                    anchors {
+                        margins: units.gu(1)
+                        fill: parent
+                    }
                     visible: false
+                    contentWidth: grid.width
+                    contentHeight: grid.height
                     Grid {
-                        anchors.margins: units.gu(1)
-                        anchors.fill: parent
+                        id: grid
                         columns: 3
                         spacing: units.gu(1)
                         UbuntuShape {
