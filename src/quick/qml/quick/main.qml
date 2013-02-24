@@ -49,7 +49,11 @@ MainView {
                                 radius: "medium"
                                 width: units.gu(12)
                                 height: units.gu(12)
-                                color: My.color.coolGray
+                                color: {
+                                    var keys = Object.keys(My.color);
+                                    var i = Math.floor( Math.random()*keys.length );
+                                    return My.color[keys[i]];
+                                }
                             }
                         }
                     }
