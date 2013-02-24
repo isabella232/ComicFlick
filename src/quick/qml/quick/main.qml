@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import "helpers.js" as My
 
 MainView {
     id: root
@@ -20,15 +21,32 @@ MainView {
             anchors.fill: parent
             Tab {
                 title: "ComicFlick"
-                page: Page {
-                    anchors.fill: parent;
+                page: Item {
+                    anchors.fill: parent
                     visible: false
-                    Rectangle {
-                        anchors.fill: parent;
-                        color: "#ffffaa"
-                        MouseArea {
-                            anchors.fill: parent;
-                            onClicked: pageStack.push(comicPage)
+                    Grid {
+                        anchors.margins: units.gu(1)
+                        anchors.fill: parent
+                        columns: 3
+                        spacing: units.gu(1)
+                        UbuntuShape {
+                            radius: "medium"
+                            width: units.gu(12)
+                            height: units.gu(12)
+                            color: My.color.ubuntuOrange
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: pageStack.push(comicPage)
+                            }
+                        }
+                        Repeater {
+                            model: 17
+                            UbuntuShape {
+                                radius: "medium"
+                                width: units.gu(12)
+                                height: units.gu(12)
+                                color: My.color.coolGray
+                            }
                         }
                     }
                 }
