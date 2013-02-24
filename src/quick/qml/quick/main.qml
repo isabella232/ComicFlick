@@ -6,34 +6,40 @@ MainView {
     width: units.gu(40)  // magic numbers
     height: units.gu(71) // taken from lp:gallery-app for phone size
     focus: true
-    Page {
-        title: "Comic"
+    PageStack {
+        id: pageStack
         anchors.fill: parent
-        Image {
-            id: comicImage
-            source: "image://comicimageprovider/current"
-            Behavior on x {
-                PropertyAnimation {
-                    easing.type: Easing.InOutQuad
+        Component.onCompleted: {
+            push(mainPage);
+            // TODO http://askubuntu.com/questions/260782
+            if ("headerVisible" in pageStack)
+                headerVisible = false;
+        }
+        Tabs {
+            id: mainPage
+            anchors.fill: parent
+            Tab {
+                title: "ComicFlick"
+                page: Page {
+                    anchors.fill: parent;
+                    visible: false
+                    Rectangle {
+                        anchors.fill: parent;
+                        color: "#ffffaa"
+                        MouseArea {
+                            anchors.fill: parent;
+                            onClicked: pageStack.push(comicPage)
+                        }
+                    }
                 }
-            }
-            Behavior on y {
-                PropertyAnimation {
-                    easing.type: Easing.InOutQuad
-                }
-            }
-            Connections {
-                target: comic
-                onChanged: comicImage.updatePosition()
-            }
-            Component.onCompleted: updatePosition()
-            function updatePosition() {
-                var rect = comic.currentRect()
-                comicImage.x = (root.width  / 2) - (rect.x + rect.width / 2)
-                comicImage.y = (root.height / 2) - (rect.y + rect.height / 2)
             }
         }
+        Comic {
+            id: comicPage
+            visible: false
+        }
     }
+
     Keys.onPressed: {
         if ([ Qt.Key_Up, Qt.Key_W, Qt.Key_J ].indexOf(event.key) > -1) {
             comic.up();
