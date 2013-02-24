@@ -28,6 +28,7 @@ CONFIG += link_pkgconfig
 PKGCONFIG += opencv
 
 OTHER_FILES += \
+    qml/quick/helpers.js \
     why_are_you_reading_this.png
 
 for(file, OTHER_FILES) {
