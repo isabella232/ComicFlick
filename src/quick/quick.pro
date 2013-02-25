@@ -32,5 +32,5 @@ OTHER_FILES += \
     why_are_you_reading_this.png
 
 for(file, OTHER_FILES) {
-    QMAKE_POST_LINK += "cp $$SRC/$$TARGET/$$file $$BUILD/$$TARGET"
+    QMAKE_POST_LINK += "cp $$SRC/$$TARGET/$$file $$BUILD/$$TARGET;"
 }
