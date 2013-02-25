@@ -13,3 +13,9 @@ var color = {
     textGray: "#333333",
     canonicalAubergine: "#772953",
 }
+
+function randomColor() {
+    var keys = Object.keys(color);
+    var i = Math.floor( Math.random()*keys.length );
+    return color[keys[i]];
+}
