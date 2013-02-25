@@ -11,10 +11,10 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 SOURCES += comicflick.cpp \
+    Comic.cpp \
     ComicFrame.cpp
 
 HEADERS += comicflick.h \
-    ComicFrame.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
