@@ -21,40 +21,22 @@ MainView {
             anchors.fill: parent
             Tab {
                 title: "ComicFlick"
-                page: Flickable {
-                    anchors {
-                        margins: units.gu(1)
-                        fill: parent
-                    }
-                    visible: false
-                    contentWidth: grid.width
-                    contentHeight: grid.height
-                    Grid {
-                        id: grid
-                        columns: 3
-                        spacing: units.gu(1)
-                        UbuntuShape {
-                            radius: "medium"
-                            width: units.gu(12)
-                            height: units.gu(12)
-                            color: My.color.ubuntuOrange
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: pageStack.push(comicPage)
-                            }
-                        }
-                        Repeater {
-                            model: 17
-                            UbuntuShape {
-                                radius: "medium"
-                                width: units.gu(12)
-                                height: units.gu(12)
-                                color: {
-                                    var keys = Object.keys(My.color);
-                                    var i = Math.floor( Math.random()*keys.length );
-                                    return My.color[keys[i]];
-                                }
-                            }
+                page: GridView {
+                    id: gridview
+                    visible         : false
+                    anchors.fill    : parent
+                    anchors.margins : units.gu(1)
+                    cellWidth       : units.gu(13)
+                    cellHeight      : units.gu(13)
+                    model           : mockComicsModel
+                    delegate        : UbuntuShape {
+                        width       : gridview.cellWidth  - units.gu(1)
+                        height      : gridview.cellHeight - units.gu(1)
+                        radius      : "medium"
+                        color       : model.color || My.randomColor()
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: if(model.url) pageStack.push(comicPage)
                         }
                     }
                 }
@@ -65,6 +47,9 @@ MainView {
             visible: false
         }
     }
+
+    // Below: debug
+    // for debugging we want keyboard shortcuts and mocked up models
 
     Keys.onPressed: {
         if ([ Qt.Key_Up, Qt.Key_W, Qt.Key_J ].indexOf(event.key) > -1) {
@@ -80,4 +65,17 @@ MainView {
             comic.right();
         }
     }
+
+    ListModel {
+        id: mockComicsModel
+        ListElement {
+            color: "#C16014"
+            url  : "http://abstrusegoose.com/"
+        }
+        Component.onCompleted: {
+            for (var i=18;--i;) append({ color: My.randomColor() });
+        }
+    }
+
+    // Above: debug
 }
