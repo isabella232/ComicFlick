@@ -29,6 +29,7 @@ PKGCONFIG += opencv
 
 OTHER_FILES += \
     qml/quick/helpers.js \
+    qml/quick/SmoothProperty.qml \
     why_are_you_reading_this.png
 
 for(file, OTHER_FILES) {
