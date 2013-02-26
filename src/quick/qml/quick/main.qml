@@ -20,29 +20,15 @@ MainView {
             id: mainPage
             anchors.fill: parent
             Tab {
-                title: "ComicFlick"
-                page: GridView {
-                    id: gridview
-                    visible         : false
-                    anchors.fill    : parent
-                    anchors.margins : units.gu(1)
-                    cellWidth       : units.gu(13)
-                    cellHeight      : units.gu(13)
-                    model           : mockComicsModel
-                    delegate        : UbuntuShape {
-                        width       : gridview.cellWidth  - units.gu(1)
-                        height      : gridview.cellHeight - units.gu(1)
-                        radius      : "medium"
-                        color       : model.color || My.randomColor()
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: if(model.url) pageStack.push(comicPage)
-                        }
-                    }
+                title: "Comics"
+                page: ComicsPage {
+                    visible: false
+                    model: mockComicsModel
+                    onComicSelected: pageStack.push(comicPage)
                 }
             }
         }
-        Comic {
+        ComicPage {
             id: comicPage
             visible: false
         }
