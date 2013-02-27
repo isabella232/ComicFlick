@@ -22,6 +22,7 @@ MainView {
             Tab {
                 title: "Comics"
                 page: ComicsPage {
+                    id: comicsPage
                     visible: false
                     model: mockComicsModel
                     onComicSelected: pageStack.push(comicPage)
@@ -58,8 +59,12 @@ MainView {
             color: "#C16014"
             url  : "http://abstrusegoose.com/"
         }
+        ListElement {
+            color: "#60C114"
+            url  : "http://xkcd.com/"
+        }
         Component.onCompleted: {
-            for (var i=18;--i;) append({ color: My.randomColor() });
+            for (var i=18;i--;) append({ color: My.randomColor() });
         }
     }
 
